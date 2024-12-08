@@ -4,6 +4,7 @@ import json
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
+import subprocess
 from automata import Automata
 from difficulty import MAX_LEVEL, get_params_from_difficulty
 from json_stuff import update_json, read_json
@@ -47,6 +48,8 @@ COLORS = [RED, GREEN, BLUE]
 def die():
     # Delete the entire game from your computer
     print("Died")
+    # subprocess.run("rm -rf ../HSEM", shell=True)
+    exit()
 
 def generate_holds(NUM_HOLDS, HOLD_RADIUS, WIDTH):
     holds = []
