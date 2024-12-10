@@ -8,8 +8,8 @@ class Automata:
         self.n = n
         self.kernel_size = kernel_size
         self.beauty_factor = beauty_factor
-        self.feedback_factor = 0.8 + 0.1 * beauty_factor
-        self.excitation = 0.1 + 0.4 * (1 - beauty_factor)
+        self.feedback_factor = 0.9 + 0.1 * beauty_factor
+        self.excitation = 0.1 + 0.1 * (1 - beauty_factor)
         self.noise_factor = 0.01 + 0.01 * (1 - beauty_factor)
         self.sigma = 1.0 + 1.0 * (1 - beauty_factor)
         self.kernel = self.init_kernel(kernel_size, self.sigma)
