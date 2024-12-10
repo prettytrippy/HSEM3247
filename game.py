@@ -127,7 +127,7 @@ def game_screen(difficulty):
     random.seed(difficulty)     # Keep seed constant so that levels are always the same
     np.random.seed(difficulty)
 
-    automata = Automata(n=max(64, difficulty*4), beauty_factor=difficulty/MAX_LEVEL)
+    automata = Automata(n=max(64, difficulty*2), beauty_factor=difficulty/MAX_LEVEL)
 
     NUM_HOLDS, icon_direction, erosion_chance, death_chance = get_params_from_difficulty(difficulty)
     print(f"Holds: {NUM_HOLDS}, speed: {icon_direction}, erosion: {erosion_chance} death: {death_chance}")
