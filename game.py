@@ -163,7 +163,7 @@ def game_screen(difficulty):
                         if player_pos < len(holds) - 1:
                             player_pos += 1
                     else:
-                        random.seed(time.now()) 
+                        random.seed(time.time()) 
                         if random.randint(0, 100) < death_chance * scale:
                             die()
                         if player_pos > 0:
