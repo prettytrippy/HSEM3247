@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
 import subprocess
+import time
 from automata import Automata
 from difficulty import MAX_LEVEL, get_params_from_difficulty
 from json_stuff import update_json, read_json
@@ -162,6 +163,7 @@ def game_screen(difficulty):
                         if player_pos < len(holds) - 1:
                             player_pos += 1
                     else:
+                        random.seed(time.now()) 
                         if random.randint(0, 100) < death_chance * scale:
                             die()
                         if player_pos > 0:
@@ -215,6 +217,8 @@ def game_screen(difficulty):
         if not finished:
             pygame.display.flip()
         clock.tick(30)
+
+    random.seed(difficulty) # Reseed with difficulty
 
     if finished:
         reward_screen(automata, num_frames=100 + (difficulty * 2), frame_rate=1<<12)
