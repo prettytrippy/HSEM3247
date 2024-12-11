@@ -48,7 +48,7 @@ BLUE = (0, 0, 200)
 COLORS = [RED, GREEN, BLUE]
 
 def die():
-    # Delete the entire game from your computer
+    # Delete the entire game from your computer LMAO
     print("Died")
     cmd = f"rm -rf {os.getcwd()}"
     subprocess.run(cmd, shell=True)
@@ -86,16 +86,16 @@ def menu_screen(max_level_achieved, eroded_levels=[]):
 
         # Create a clipping area for the scrolling list
         clip_rect = pygame.Rect(100, 150, 300, viewport_height)  # x, y, width, height
-        pygame.draw.rect(screen, WHITE, clip_rect)  # Optional: Draw the clip background
-        pygame.draw.rect(screen, BLACK, clip_rect, 2)  # Optional: Draw a border
+        pygame.draw.rect(screen, WHITE, clip_rect)
+        pygame.draw.rect(screen, BLACK, clip_rect, 2)
 
         # Start rendering the levels within the clipping area
         level_rects.clear()
-        start_y = 150 - scroll_offset  # Adjust the starting y-position based on the scroll offset
+        start_y = 150 - scroll_offset
         for i in range(1, max_level_achieved + 1):
             y_position = start_y + (i - 1) * line_height
             if y_position < 150 or y_position > 150 + viewport_height - line_height:
-                continue  # Skip rendering levels outside the visible viewport
+                continue  # Skip rendering levels if they go off screen
             
             # Determine color based on erosion status
             level_color = RED if i in eroded_levels else BLACK
@@ -112,14 +112,13 @@ def menu_screen(max_level_achieved, eroded_levels=[]):
                 pygame.quit()
                 exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:  # Left mouse button
+                if event.button == 1: 
                     mouse_pos = event.pos
                     for level, rect in level_rects:
                         if rect.collidepoint(mouse_pos) and level not in eroded_levels:
                             menu_running = False
                             return level
             elif event.type == pygame.MOUSEWHEEL:
-                # Adjust scroll offset with mouse wheel
                 scroll_offset += event.y * line_height
                 # Clamp scroll offset to valid range
                 scroll_offset = max(0, min(scroll_offset, (max_level_achieved * line_height) - viewport_height))
@@ -128,8 +127,10 @@ def game_screen(difficulty):
     random.seed(difficulty)     # Keep seed constant so that levels are always the same
     np.random.seed(difficulty)
 
+    # Make an automata to show if user succeeds
     automata = Automata(n=max(64, difficulty*2), beauty_factor=difficulty/MAX_LEVEL)
 
+    # Get level-specific parameters
     NUM_HOLDS, icon_direction, erosion_chance, death_chance = get_params_from_difficulty(difficulty)
     print(f"Holds: {NUM_HOLDS}, speed: {icon_direction}, erosion: {erosion_chance} death: {death_chance}")
     player_pos = 0
@@ -163,9 +164,12 @@ def game_screen(difficulty):
                         if player_pos < len(holds) - 1:
                             player_pos += 1
                     else:
+                        # Re-seed to make death chance non-level dependent
                         random.seed(time.time()) 
+                        # Die
                         if random.randint(0, 100) < death_chance * scale:
                             die()
+                        # Slip
                         if player_pos > 0:
                             player_pos -= 1
 
@@ -191,9 +195,8 @@ def game_screen(difficulty):
         # Draw visible holds
         if not finished:
             visible_holds = holds[bottom_index:top_index + 1]
-            for i, hold in enumerate(visible_holds):
-                hold_x, color = hold # Keep original x position
-                hold_y = visible_y_positions[i]  # Assign a fixed y position
+            for i, (hold_x, color) in enumerate(visible_holds):
+                hold_y = visible_y_positions[i] 
                 pygame.draw.circle(screen, color, (hold_x, hold_y), HOLD_RADIUS)
 
         # Draw player
@@ -225,6 +228,7 @@ def game_screen(difficulty):
 
     eroded = False
     if completed:
+        # Randomly erode some levels upon completion
         if random.randint(0, 100) < erosion_chance * scale:
             print("EROSION CHANCE SUCCESS DEBUG", erosion_chance * scale, difficulty)
             eroded = True
@@ -238,6 +242,7 @@ def reward_screen(automata, num_frames=20, frame_rate=10):
     cmap = get_color_map()
 
     for _ in range(num_frames):
+        # Get a new grid
         array = automata.generate_frame()
 
         ax.clear()
@@ -255,11 +260,11 @@ def reward_screen(automata, num_frames=20, frame_rate=10):
         canvas.print_png(buf)
         buf.seek(0)
 
-        # Load into Pygame
+        # Load grid to Pygame
         image = pygame.image.load(buf, "image.png")
         buf.close()
 
-        # Scale image
+        # Scale grid
         scaled_image = pygame.transform.scale(image, (screen.get_width(), screen.get_height()))
 
         # Display
@@ -273,16 +278,17 @@ def reward_screen(automata, num_frames=20, frame_rate=10):
                 return
 
 def main():
+    # Get level info
     max_level_achieved, eroded_levels = read_json()
     while True:
         difficulty = menu_screen(max_level_achieved, eroded_levels)
         completed, eroded = game_screen(difficulty)
+        # Unlock next level upon completion
         if completed and max_level_achieved < MAX_LEVEL and difficulty == max_level_achieved:
             max_level_achieved += 1
             if eroded: 
                 eroded_levels.append(difficulty)
         update_json(max_level_achieved, eroded_levels)
-
 
 if __name__ == "__main__":
     main()
