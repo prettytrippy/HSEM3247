@@ -1,6 +1,6 @@
 # HSEM3247
 
-HSEM3247 is a ~~creatively titled~~ rock climbing video game. You play as an alpinist, during a time where odd atmospheric phenomena make the night sky particularly beautiful. Each ascent rewards you with exposure to such phenomena, and the satisfaction of completing the climb. Each climb risks eroding the route, making it impossible to climb again, as well as death, making it impossible for **you** to climb again. How much risk is worth this kind of beauty?
+HSEM3247 is a ~~creatively titled~~ rock climbing video game. You play as an alpinist, during a time where odd atmospheric phenomena make the night sky particularly beautiful. Each ascent rewards you with exposure to such phenomena, and the satisfaction of completing the climb. Each climb risks eroding the route, making it impossible to climb again, as well as death, making it impossible for **you** to climb again. How much beauty is worth this kind of risk?
 
 ## Installation
 
