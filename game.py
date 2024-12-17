@@ -49,7 +49,6 @@ COLORS = [RED, GREEN, BLUE]
 
 def die():
     # Delete the entire game from your computer
-    # print("GET FUCKED LMAOOOOOOO")
     current_dir = os.getcwd()
 
     try:
