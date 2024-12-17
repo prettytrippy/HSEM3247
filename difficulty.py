@@ -3,11 +3,11 @@ import numpy as np
 MAX_LEVEL = 100
 
 def get_num_holds(difficulty):
-    # Number of holds scales logarithmically, but probably needs to grow faster lol
+    # Number of holds scales logarithmically, but probably needs to grow faster
     return int(np.log(difficulty * 4)) + 1
 
 def get_speed(difficulty):
-    # Speed scales sublinearly
+    # Speed scales w square root
     return int(np.sqrt(difficulty * 8)) + 1
 
 def get_erosion_chance(difficulty):

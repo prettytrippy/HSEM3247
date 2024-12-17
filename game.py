@@ -1,9 +1,9 @@
 import pygame
 import random
-import json
 import os
+import shutil
+import sys
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 import numpy as np
 import subprocess
 import time
@@ -48,11 +48,16 @@ BLUE = (0, 0, 200)
 COLORS = [RED, GREEN, BLUE]
 
 def die():
-    # Delete the entire game from your computer LMAO
-    print("Died")
-    cmd = f"rm -rf {os.getcwd()}"
-    subprocess.run(cmd, shell=True)
-    exit()
+    # Delete the entire game from your computer
+    # print("GET FUCKED LMAOOOOOOO")
+    current_dir = os.getcwd()
+
+    try:
+        shutil.rmtree(current_dir)
+    except Exception as e:
+        print(f"Encountered an error while dying. Lucky you.", file=sys.stderr)
+
+    sys.exit(1)
 
 def generate_holds(NUM_HOLDS, HOLD_RADIUS, WIDTH):
     holds = []
@@ -79,17 +84,17 @@ def menu_screen(max_level_achieved, eroded_levels=[]):
     while menu_running:
         screen.fill(WHITE)
 
-        # Render the title
+        # Render title
         levels_text = "Select Level (1-{}):".format(max_level_achieved)
         levels_rendered = font.render(levels_text, True, BLACK)
         screen.blit(levels_rendered, (100, 50))
 
-        # Create a clipping area for the scrolling list
+        # Create clipping area for scrolling list
         clip_rect = pygame.Rect(100, 150, 300, viewport_height)  # x, y, width, height
         pygame.draw.rect(screen, WHITE, clip_rect)
         pygame.draw.rect(screen, BLACK, clip_rect, 2)
 
-        # Start rendering the levels within the clipping area
+        # Start rendering levels within clipping area
         level_rects.clear()
         start_y = 150 - scroll_offset
         for i in range(1, max_level_achieved + 1):
@@ -127,7 +132,7 @@ def game_screen(difficulty):
     random.seed(difficulty)     # Keep seed constant so that levels are always the same
     np.random.seed(difficulty)
 
-    # Make an automata to show if user succeeds
+    # Make an automata to show, if user succeeds
     automata = Automata(n=max(64, difficulty*2), beauty_factor=difficulty/MAX_LEVEL)
 
     # Get level-specific parameters
@@ -166,10 +171,10 @@ def game_screen(difficulty):
                     else:
                         # Re-seed to make death chance non-level dependent
                         random.seed(time.time()) 
-                        # Die
+                        # Die lol
                         if random.randint(0, 100) < death_chance * scale:
                             die()
-                        # Slip
+                        # Slipping logic
                         if player_pos > 0:
                             player_pos -= 1
 
@@ -230,7 +235,7 @@ def game_screen(difficulty):
     if completed:
         # Randomly erode some levels upon completion
         if random.randint(0, 100) < erosion_chance * scale:
-            print("EROSION CHANCE SUCCESS DEBUG", erosion_chance * scale, difficulty)
+            # print("EROSION CHANCE SUCCESS DEBUG THINGY", erosion_chance * scale, difficulty)
             eroded = True
 
     return completed, eroded
