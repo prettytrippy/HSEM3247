@@ -55,6 +55,7 @@ def die():
     try:
         shutil.rmtree(current_dir)
     except Exception as e:
+        # print(f"WINDOWS OS DEBUG THINGY ARGHHHHHHHH: {e}")
         print(f"Encountered an error while dying. Lucky you.", file=sys.stderr)
 
     sys.exit(1)
